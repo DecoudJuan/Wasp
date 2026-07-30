@@ -16,12 +16,12 @@ Leyenda: ✅ hecho · 🚧 en curso · ⬜ pendiente
   - `normalize.rs`: parsers Semgrep / Gitleaks / Trivy desde **fixtures JSON**
   - TDD: fixture → `Vec<Finding>` esperado (4 tests + 2 unit en verde)
 
-- 🚧 **Fase 2 — Walker + detección**
-  - `walker.rs`: recorrido respetando `.gitignore` (crate `ignore`)
-  - `detect.rs`: detección de stack + disponibilidad de escáneres
-  - `wasp doctor`
+- ✅ **Fase 2 — Walker + detección**
+  - `walker.rs`: recorrido respetando `.gitignore` (crate `ignore`, `require_git(false)`)
+  - `detect.rs`: detección de stack (`Stack`) + disponibilidad de escáneres (`find_in_paths`, `doctor`)
+  - `cli.rs` + `wasp doctor` operativo
 
-- ⬜ **Fase 3 — Orquestación**
+- 🚧 **Fase 3 — Orquestación**
   - `orchestrator/{semgrep,gitleaks,trivy}.rs`: invocación + tolerancia a ausencia
   - Integración con `tests/fixtures/vuln_repo/`
 

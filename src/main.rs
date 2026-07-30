@@ -1,6 +1,6 @@
-use wasp::{version, PRODUCT};
+use clap::Parser;
+use wasp::cli::Cli;
 
-fn main() {
-    // Fase 0: punto de entrada mínimo. La CLI real (clap) llega en fases posteriores.
-    println!("{} v{}", PRODUCT, version());
+fn main() -> anyhow::Result<()> {
+    Cli::parse().run()
 }

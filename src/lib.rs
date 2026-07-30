@@ -4,8 +4,11 @@
 //! recorrido de repositorio, orquestación de escáneres y reporteadores) para que
 //! tanto el binario `wasp` como los tests de integración lo consuman.
 
+pub mod cli;
+pub mod detect;
 pub mod model;
 pub mod normalize;
+pub mod walker;
 
 /// Nombre del producto, usado en cabeceras de reportes.
 pub const PRODUCT: &str = "Wasp";
