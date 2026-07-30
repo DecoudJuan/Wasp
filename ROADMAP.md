@@ -35,10 +35,11 @@ Leyenda: ✅ hecho · 🚧 en curso · ⬜ pendiente
   - `dedupe.rs`: dedupe idempotente por `fingerprint` + `sort_by_severity`
   - Aplicados en `orchestrator::scan` → salida consistente en todos los formatos
 
-- 🚧 **Fase 6 — Skill Claude (auditor senior)**
-  - `.claude/skills/wasp/SKILL.md`: workflow de auditoría, triage, OWASP/CWE, remediación
+- ✅ **Fase 6 — Skill Claude (auditor senior)**
+  - `.claude/skills/wasp/SKILL.md`: rol de auditor senior, flujo scan→triage→reporte,
+    ahorro de tokens (solo snippets), mapeo OWASP/CWE, remediación y fallback sin escáneres
 
-- ⬜ **Fase 7 — Pulido + docs finales**
+- 🚧 **Fase 7 — Pulido + docs finales**
   - Guía de instalación de escáneres (nota Windows/WSL), ejemplos, cierre de ROADMAP
 
 ## Ideas futuras (post-1.0)
