@@ -21,11 +21,12 @@ Leyenda: ✅ hecho · 🚧 en curso · ⬜ pendiente
   - `detect.rs`: detección de stack (`Stack`) + disponibilidad de escáneres (`find_in_paths`, `doctor`)
   - `cli.rs` + `wasp doctor` operativo
 
-- 🚧 **Fase 3 — Orquestación**
-  - `orchestrator/{semgrep,gitleaks,trivy}.rs`: invocación + tolerancia a ausencia
-  - Integración con `tests/fixtures/vuln_repo/`
+- ✅ **Fase 3 — Orquestación**
+  - `orchestrator/{semgrep,gitleaks,trivy}.rs`: `build_command` + `run`
+  - `orchestrator::scan` → `ScanOutcome` (ran/skipped/errors) con degradación con gracia
+  - Tests independientes del entorno (contabilidad + flags de comando)
 
-- ⬜ **Fase 4 — Reporters**
+- 🚧 **Fase 4 — Reporters**
   - `report/json.rs` (compacto para LLM), `report/sarif.rs` (SARIF 2.1.0), `report/markdown.rs`
 
 - ⬜ **Fase 5 — Dedupe + severidad**
