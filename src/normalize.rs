@@ -37,10 +37,29 @@ struct SemgrepExtra {
 
 #[derive(Deserialize, Default)]
 struct SemgrepMeta {
-    #[serde(default)]
+    #[serde(default, deserialize_with = "string_or_seq")]
     cwe: Vec<String>,
-    #[serde(default)]
+    #[serde(default, deserialize_with = "string_or_seq")]
     owasp: Vec<String>,
+}
+
+/// Deserializa un campo que puede venir como string, lista de strings o null.
+/// Semgrep usa las tres formas indistintamente para `cwe` y `owasp`.
+fn string_or_seq<'de, D>(deserializer: D) -> Result<Vec<String>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    #[derive(Deserialize)]
+    #[serde(untagged)]
+    enum StringOrSeq {
+        Seq(Vec<String>),
+        One(String),
+    }
+    Ok(match Option::<StringOrSeq>::deserialize(deserializer)? {
+        Some(StringOrSeq::Seq(v)) => v,
+        Some(StringOrSeq::One(s)) => vec![s],
+        None => Vec::new(),
+    })
 }
 
 /// Semgrep: ERROR→High, WARNING→Medium, INFO→Info.

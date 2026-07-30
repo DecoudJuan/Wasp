@@ -1,0 +1,36 @@
+{
+  "version": "1.172.0",
+  "results": [
+    {
+      "check_id": "python.crypto.weak-hash",
+      "path": "a.py",
+      "start": { "line": 1 },
+      "end": { "line": 1 },
+      "extra": {
+        "message": "Uso de hash débil",
+        "severity": "ERROR",
+        "lines": "hashlib.sha1(x)",
+        "metadata": {
+          "cwe": "CWE-327: Use of a Broken or Risky Cryptographic Algorithm",
+          "owasp": "A02:2021 - Cryptographic Failures"
+        }
+      }
+    },
+    {
+      "check_id": "python.sql.injection",
+      "path": "b.py",
+      "start": { "line": 2 },
+      "end": { "line": 2 },
+      "extra": {
+        "message": "Posible SQLi",
+        "severity": "WARNING",
+        "lines": "cursor.execute(q)",
+        "metadata": {
+          "cwe": ["CWE-89"],
+          "owasp": null
+        }
+      }
+    }
+  ],
+  "errors": []
+}

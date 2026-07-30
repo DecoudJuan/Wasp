@@ -28,6 +28,25 @@ fn normaliza_semgrep() {
 }
 
 #[test]
+fn normaliza_semgrep_con_metadata_escalar_o_nula() {
+    // Semgrep emite `cwe`/`owasp` como string, lista o null indistintamente.
+    // El parser debe tolerar las tres formas sin romper todo el documento.
+    let findings = normalize::from_semgrep(&fixture("semgrep_scalar_meta.json")).unwrap();
+    assert_eq!(findings.len(), 2);
+
+    // Primer hallazgo: cwe y owasp como string escalar.
+    assert_eq!(findings[0].cwe, vec![327]);
+    assert_eq!(
+        findings[0].owasp.as_deref(),
+        Some("A02:2021 - Cryptographic Failures")
+    );
+
+    // Segundo: cwe como lista, owasp null.
+    assert_eq!(findings[1].cwe, vec![89]);
+    assert_eq!(findings[1].owasp, None);
+}
+
+#[test]
 fn normaliza_gitleaks() {
     let findings = normalize::from_gitleaks(&fixture("gitleaks_sample.json")).unwrap();
     assert_eq!(findings.len(), 2);
