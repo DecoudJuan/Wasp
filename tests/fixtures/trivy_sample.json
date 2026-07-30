@@ -1,0 +1,34 @@
+{
+  "SchemaVersion": 2,
+  "Results": [
+    {
+      "Target": "package-lock.json",
+      "Class": "lang-pkgs",
+      "Type": "npm",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2021-23337",
+          "PkgName": "lodash",
+          "InstalledVersion": "4.17.19",
+          "FixedVersion": "4.17.21",
+          "Severity": "HIGH",
+          "Title": "lodash: command injection via template",
+          "Description": "lodash versions prior to 4.17.21 are vulnerable to command injection via the template function.",
+          "CweIDs": ["CWE-77", "CWE-94"],
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-23337"
+        },
+        {
+          "VulnerabilityID": "CVE-2020-8203",
+          "PkgName": "lodash",
+          "InstalledVersion": "4.17.19",
+          "FixedVersion": "4.17.20",
+          "Severity": "CRITICAL",
+          "Title": "lodash: prototype pollution",
+          "Description": "Prototype pollution in lodash.",
+          "CweIDs": ["CWE-1321"],
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2020-8203"
+        }
+      ]
+    }
+  ]
+}

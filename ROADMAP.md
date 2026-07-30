@@ -11,12 +11,12 @@ Leyenda: ✅ hecho · 🚧 en curso · ⬜ pendiente
   - CI (fmt + clippy + test)
   - Test de humo en verde
 
-- ⬜ **Fase 1 — Modelo + normalizadores** *(el corazón)*
-  - `model.rs`: `Finding`, `Severity`, `Confidence`, `Location`, `fingerprint`
+- ✅ **Fase 1 — Modelo + normalizadores** *(el corazón)*
+  - `model.rs`: `Finding`, `Severity`, `Confidence`, `Location`, `fingerprint`, `parse_cwe`
   - `normalize.rs`: parsers Semgrep / Gitleaks / Trivy desde **fixtures JSON**
-  - TDD: fixture → `Vec<Finding>` esperado
+  - TDD: fixture → `Vec<Finding>` esperado (4 tests + 2 unit en verde)
 
-- ⬜ **Fase 2 — Walker + detección**
+- 🚧 **Fase 2 — Walker + detección**
   - `walker.rs`: recorrido respetando `.gitignore` (crate `ignore`)
   - `detect.rs`: detección de stack + disponibilidad de escáneres
   - `wasp doctor`

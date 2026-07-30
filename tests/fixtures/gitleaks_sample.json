@@ -1,0 +1,22 @@
+[
+  {
+    "Description": "AWS Access Key",
+    "StartLine": 3,
+    "EndLine": 3,
+    "File": "config/prod.env",
+    "RuleID": "aws-access-token",
+    "Match": "AKIAIOSFODNN7EXAMPLE",
+    "Secret": "AKIAIOSFODNN7EXAMPLE",
+    "Line": "AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE"
+  },
+  {
+    "Description": "Generic API Key",
+    "StartLine": 7,
+    "EndLine": 7,
+    "File": "src/client.js",
+    "RuleID": "generic-api-key",
+    "Match": "api_key = \"sk_live_abcd1234\"",
+    "Secret": "sk_live_abcd1234",
+    "Line": "const api_key = \"sk_live_abcd1234\""
+  }
+]
