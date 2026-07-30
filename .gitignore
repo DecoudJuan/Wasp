@@ -2,10 +2,10 @@
 **/*.rs.bk
 Cargo.lock.orig
 
-# Reportes generados por wasp
-/wasp-report.md
-/wasp-report.sarif
-/wasp-findings.json
+# Reportes generados por wasp (pueden contener datos de proyectos privados)
+/wasp-report*
+/wasp-findings*.json
+/INFORME-*.md
 *.wasp.json
 
 # Proyectos de prueba escaneados localmente (no versionar)
