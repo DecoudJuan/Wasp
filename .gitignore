@@ -1,0 +1,9 @@
+/target
+**/*.rs.bk
+Cargo.lock.orig
+
+# Reportes generados por wasp
+/wasp-report.md
+/wasp-report.sarif
+/wasp-findings.json
+*.wasp.json

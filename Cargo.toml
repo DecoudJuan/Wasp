@@ -1,0 +1,31 @@
+[package]
+name = "wasp"
+version = "0.1.0"
+edition = "2021"
+description = "Auditor de seguridad OWASP que orquesta escáneres OSS y comprime hallazgos para revisión asistida por LLM"
+license = "MIT"
+repository = "https://github.com/JuanDecoud/Wasp"
+readme = "README.md"
+keywords = ["security", "owasp", "sast", "sarif", "audit"]
+categories = ["command-line-utilities", "development-tools"]
+
+[[bin]]
+name = "wasp"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+ignore = "0.4"
+anyhow = "1"
+
+[dev-dependencies]
+assert_cmd = "2"
+predicates = "3"
+tempfile = "3"
+
+[profile.release]
+lto = true
+strip = true
