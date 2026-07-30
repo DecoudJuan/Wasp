@@ -7,7 +7,10 @@ use wasp::orchestrator::{self, gitleaks, semgrep, trivy};
 fn escaneo_contabiliza_las_tres_herramientas_sin_fallar() {
     // Independiente del entorno: cada herramienta cae en exactamente una categoría
     // (ejecutada / omitida / con error) y el escaneo nunca entra en pánico.
-    let outcome = orchestrator::scan(Path::new("."));
+    // Escaneamos un directorio temporal vacío para que sea rápido y determinista
+    // aunque los escáneres estén instalados en la máquina.
+    let dir = tempfile::tempdir().unwrap();
+    let outcome = orchestrator::scan(dir.path());
     let total = outcome.ran.len() + outcome.skipped.len() + outcome.errors.len();
     assert_eq!(total, 3, "las 3 herramientas deben quedar contabilizadas");
 }

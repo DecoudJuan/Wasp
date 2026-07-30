@@ -7,3 +7,7 @@ Cargo.lock.orig
 /wasp-report.sarif
 /wasp-findings.json
 *.wasp.json
+
+# Proyectos de prueba escaneados localmente (no versionar)
+/test-program/
+/scratch-*
