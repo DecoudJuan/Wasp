@@ -39,8 +39,9 @@ Leyenda: ✅ hecho · 🚧 en curso · ⬜ pendiente
   - `.claude/skills/wasp/SKILL.md`: rol de auditor senior, flujo scan→triage→reporte,
     ahorro de tokens (solo snippets), mapeo OWASP/CWE, remediación y fallback sin escáneres
 
-- 🚧 **Fase 7 — Pulido + docs finales**
-  - Guía de instalación de escáneres (nota Windows/WSL), ejemplos, cierre de ROADMAP
+- ✅ **Fase 7 — Pulido + docs finales**
+  - Fixture `tests/fixtures/vuln_repo/` + test e2e adaptativo (con/sin escáneres)
+  - README: instalación de escáneres (winget/brew/pipx), ejemplos y uso de la skill
 
 ## Ideas futuras (post-1.0)
 - Cache incremental por commit (solo re-escanear diffs)

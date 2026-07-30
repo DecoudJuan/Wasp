@@ -43,6 +43,21 @@ Wasp **degrada con gracia**: corre lo que esté instalado y avisa lo que falta
 | [Trivy](https://github.com/aquasecurity/trivy) | dependencias | ✅ binario Go |
 | [Semgrep](https://semgrep.dev/) | código (OWASP) | ⚠️ usar WSL / pipx / Docker |
 
+Instalación rápida:
+
+```bash
+# Windows (winget)
+winget install Gitleaks.Gitleaks
+winget install AquaSecurity.Trivy
+
+# macOS (brew)
+brew install gitleaks trivy semgrep
+
+# Linux / WSL
+pipx install semgrep            # o: pip install semgrep
+# gitleaks y trivy: binarios desde sus releases de GitHub
+```
+
 ## Uso (previsto)
 
 ```bash
@@ -51,11 +66,32 @@ wasp scan <ruta>         # escanea y emite Markdown + SARIF
 wasp scan <ruta> --format json   # JSON compacto para el LLM
 ```
 
-Desde Claude Code, invocá la skill:
+### Probarlo ya
+
+```bash
+cargo run -- doctor
+cargo run -- scan tests/fixtures/vuln_repo        # mini-repo con vulns intencionales
+cargo run -- scan tests/fixtures/vuln_repo --format sarif -o wasp-report.sarif
+```
+
+## Uso como skill de Claude Code
+
+La skill vive en `.claude/skills/wasp/`. Dentro de este repo está disponible sin
+más. Para usarla en **cualquier otro repo**, copiá la carpeta a tu config global:
+
+```bash
+cp -r .claude/skills/wasp ~/.claude/skills/wasp
+```
+
+Luego, desde Claude Code:
 
 ```
 /wasp <ruta-del-repo-a-auditar>
 ```
+
+Claude compilará/ubicará el binario `wasp`, correrá el escaneo, hará triage de los
+hallazgos (confirmado / probable / falso positivo) leyendo solo los fragmentos
+marcados, y devolverá un informe con impacto, evidencia y remediación.
 
 ## Desarrollo
 
