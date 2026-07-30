@@ -1,0 +1,7 @@
+# Normaliza todos los archivos de texto a LF en el repo.
+* text=auto eol=lf
+
+# Binarios: sin conversión.
+*.png binary
+*.jpg binary
+*.ico binary
