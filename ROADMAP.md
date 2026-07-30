@@ -31,11 +31,11 @@ Leyenda: ✅ hecho · 🚧 en curso · ⬜ pendiente
   - Comando `wasp scan <ruta> --format md|json|sarif [-o archivo]` operativo
   - Reporte por stdout, avisos de escáneres omitidos por stderr
 
-- 🚧 **Fase 5 — Dedupe + severidad**
-  - `dedupe.rs`: merge idempotente por `fingerprint`
-  - Normalización de severidad entre herramientas
+- ✅ **Fase 5 — Dedupe + severidad**
+  - `dedupe.rs`: dedupe idempotente por `fingerprint` + `sort_by_severity`
+  - Aplicados en `orchestrator::scan` → salida consistente en todos los formatos
 
-- ⬜ **Fase 6 — Skill Claude (auditor senior)**
+- 🚧 **Fase 6 — Skill Claude (auditor senior)**
   - `.claude/skills/wasp/SKILL.md`: workflow de auditoría, triage, OWASP/CWE, remediación
 
 - ⬜ **Fase 7 — Pulido + docs finales**

@@ -5,6 +5,7 @@
 //! tanto el binario `wasp` como los tests de integración lo consuman.
 
 pub mod cli;
+pub mod dedupe;
 pub mod detect;
 pub mod model;
 pub mod normalize;

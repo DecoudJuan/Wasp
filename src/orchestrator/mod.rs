@@ -32,6 +32,10 @@ pub fn scan(root: &Path) -> ScanOutcome {
     run_one(&mut outcome, Tool::Gitleaks, || gitleaks::run(root));
     run_one(&mut outcome, Tool::Trivy, || trivy::run(root));
 
+    // Deduplicar y ordenar por severidad para una salida consistente.
+    outcome.findings = crate::dedupe::dedupe(std::mem::take(&mut outcome.findings));
+    crate::dedupe::sort_by_severity(&mut outcome.findings);
+
     outcome
 }
 
