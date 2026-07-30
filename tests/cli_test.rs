@@ -16,6 +16,31 @@ fn doctor_lista_los_escaneres() {
 }
 
 #[test]
+fn scan_sin_herramientas_produce_reporte_y_avisa() {
+    let dir = tempfile::tempdir().unwrap();
+    Command::cargo_bin("wasp")
+        .unwrap()
+        .arg("scan")
+        .arg(dir.path())
+        .assert()
+        .success()
+        // El reporte Markdown se emite por stdout.
+        .stdout(predicate::str::contains("Wasp"));
+}
+
+#[test]
+fn scan_formato_json_emite_array() {
+    let dir = tempfile::tempdir().unwrap();
+    Command::cargo_bin("wasp")
+        .unwrap()
+        .args(["scan", "--format", "json"])
+        .arg(dir.path())
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("[").and(predicate::str::contains("]")));
+}
+
+#[test]
 fn sin_argumentos_muestra_ayuda_y_falla() {
     Command::cargo_bin("wasp")
         .unwrap()

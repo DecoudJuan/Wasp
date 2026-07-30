@@ -9,6 +9,7 @@ pub mod detect;
 pub mod model;
 pub mod normalize;
 pub mod orchestrator;
+pub mod report;
 pub mod walker;
 
 /// Nombre del producto, usado en cabeceras de reportes.

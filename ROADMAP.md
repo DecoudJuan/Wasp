@@ -26,10 +26,12 @@ Leyenda: ✅ hecho · 🚧 en curso · ⬜ pendiente
   - `orchestrator::scan` → `ScanOutcome` (ran/skipped/errors) con degradación con gracia
   - Tests independientes del entorno (contabilidad + flags de comando)
 
-- 🚧 **Fase 4 — Reporters**
+- ✅ **Fase 4 — Reporters**
   - `report/json.rs` (compacto para LLM), `report/sarif.rs` (SARIF 2.1.0), `report/markdown.rs`
+  - Comando `wasp scan <ruta> --format md|json|sarif [-o archivo]` operativo
+  - Reporte por stdout, avisos de escáneres omitidos por stderr
 
-- ⬜ **Fase 5 — Dedupe + severidad**
+- 🚧 **Fase 5 — Dedupe + severidad**
   - `dedupe.rs`: merge idempotente por `fingerprint`
   - Normalización de severidad entre herramientas
 
