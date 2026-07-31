@@ -23,7 +23,9 @@ impl Tool {
 }
 
 /// Severidad normalizada entre todas las herramientas.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[derive(
+    Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, clap::ValueEnum,
+)]
 #[serde(rename_all = "lowercase")]
 pub enum Severity {
     // El orden importa: `Ord` permite ordenar por gravedad descendente.

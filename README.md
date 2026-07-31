@@ -64,6 +64,22 @@ pipx install semgrep            # o: pip install semgrep
 wasp doctor              # reporta qué escáneres hay disponibles
 wasp scan <ruta>         # escanea y emite Markdown + SARIF
 wasp scan <ruta> --format json   # JSON compacto para el LLM
+
+# Modo CI: falla el build (exit 2) si hay hallazgos en o sobre una severidad
+wasp scan <ruta> --fail-on high --format sarif -o wasp.sarif
+```
+
+### Modo CI
+
+`--fail-on <critical|high|medium|low|info>` hace que Wasp devuelva **exit code 2**
+cuando hay al menos un hallazgo en o por encima de esa severidad (0 si está limpio).
+Ideal para bloquear un pipeline. Ejemplo en GitHub Actions:
+
+```yaml
+- run: wasp scan . --fail-on high --format sarif -o wasp.sarif
+- uses: github/codeql-action/upload-sarif@v3
+  if: always()
+  with: { sarif_file: wasp.sarif }
 ```
 
 ### Probarlo ya

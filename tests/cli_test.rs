@@ -41,6 +41,18 @@ fn scan_formato_json_emite_array() {
 }
 
 #[test]
+fn scan_fail_on_sin_hallazgos_devuelve_exito() {
+    let dir = tempfile::tempdir().unwrap();
+    Command::cargo_bin("wasp")
+        .unwrap()
+        .args(["scan", "--fail-on", "high", "--format", "json"])
+        .arg(dir.path())
+        .assert()
+        .success()
+        .stderr(predicate::str::contains("OK CI"));
+}
+
+#[test]
 fn sin_argumentos_muestra_ayuda_y_falla() {
     Command::cargo_bin("wasp")
         .unwrap()

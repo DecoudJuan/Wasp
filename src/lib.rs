@@ -7,6 +7,7 @@
 pub mod cli;
 pub mod dedupe;
 pub mod detect;
+pub mod gate;
 pub mod model;
 pub mod normalize;
 pub mod orchestrator;

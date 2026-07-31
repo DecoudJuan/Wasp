@@ -43,8 +43,11 @@ Leyenda: ✅ hecho · 🚧 en curso · ⬜ pendiente
   - Fixture `tests/fixtures/vuln_repo/` + test e2e adaptativo (con/sin escáneres)
   - README: instalación de escáneres (winget/brew/pipx), ejemplos y uso de la skill
 
+- ✅ **Modo CI — `--fail-on <severidad>`**
+  - `gate.rs`: `max_severity`, `fails`, `count_at_or_above` (lógica pura)
+  - `wasp scan --fail-on high` devuelve exit code 2 si hay hallazgos en/sobre el umbral
+
 ## Ideas futuras (post-1.0)
-- Cache incremental por commit (solo re-escanear diffs)
-- Modo CI que falla el build por severidad configurable
+- Cache incremental por commit (solo re-escanear diffs) — **en curso**
 - Reglas Semgrep propias específicas del stack de Darwin
 - Baseline / supresión de findings aceptados

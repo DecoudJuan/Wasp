@@ -1,10 +1,14 @@
 //! Definición de la CLI (clap) y despacho de comandos.
 
+use crate::model::Severity;
 use crate::report::{self, Format};
-use crate::{detect, orchestrator};
+use crate::{detect, gate, orchestrator};
 use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
+
+/// Código de salida cuando `--fail-on` detecta hallazgos en/sobre el umbral.
+pub const EXIT_GATE_FAILED: i32 = 2;
 
 #[derive(Parser)]
 #[command(
@@ -32,19 +36,23 @@ pub enum Command {
         /// Archivo de salida (por defecto: stdout).
         #[arg(short, long)]
         output: Option<PathBuf>,
+        /// Modo CI: falla (exit 2) si hay hallazgos en o sobre esta severidad.
+        #[arg(long, value_enum)]
+        fail_on: Option<Severity>,
     },
 }
 
 impl Cli {
-    /// Ejecuta el comando seleccionado.
-    pub fn run(self) -> Result<()> {
+    /// Ejecuta el comando y devuelve el código de salida del proceso.
+    pub fn run(self) -> Result<i32> {
         match self.command {
-            Command::Doctor => run_doctor(),
+            Command::Doctor => run_doctor().map(|()| 0),
             Command::Scan {
                 path,
                 format,
                 output,
-            } => run_scan(path, format, output),
+                fail_on,
+            } => run_scan(path, format, output, fail_on),
         }
     }
 }
@@ -77,7 +85,12 @@ fn run_doctor() -> Result<()> {
     Ok(())
 }
 
-fn run_scan(path: PathBuf, format: Format, output: Option<PathBuf>) -> Result<()> {
+fn run_scan(
+    path: PathBuf,
+    format: Format,
+    output: Option<PathBuf>,
+    fail_on: Option<Severity>,
+) -> Result<i32> {
     let outcome = orchestrator::scan(&path);
 
     // Aviso de herramientas omitidas por stderr (no contamina la salida principal).
@@ -106,5 +119,22 @@ fn run_scan(path: PathBuf, format: Format, output: Option<PathBuf>) -> Result<()
         }
         None => println!("{rendered}"),
     }
-    Ok(())
+
+    // Modo CI: evaluar la puerta de severidad.
+    if let Some(threshold) = fail_on {
+        let n = gate::count_at_or_above(&outcome.findings, threshold);
+        if n > 0 {
+            eprintln!(
+                "FALLA CI: {n} hallazgo(s) en o sobre severidad '{}'.",
+                threshold.as_str()
+            );
+            return Ok(EXIT_GATE_FAILED);
+        }
+        eprintln!(
+            "OK CI: sin hallazgos en o sobre severidad '{}'.",
+            threshold.as_str()
+        );
+    }
+
+    Ok(0)
 }

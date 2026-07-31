@@ -2,5 +2,6 @@ use clap::Parser;
 use wasp::cli::Cli;
 
 fn main() -> anyhow::Result<()> {
-    Cli::parse().run()
+    let code = Cli::parse().run()?;
+    std::process::exit(code);
 }
