@@ -11,3 +11,6 @@ Cargo.lock.orig
 # Proyectos de prueba escaneados localmente (no versionar)
 /test-program/
 /scratch-*
+
+# Cache incremental de wasp
+.wasp-cache.json

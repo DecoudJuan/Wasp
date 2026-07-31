@@ -67,7 +67,18 @@ wasp scan <ruta> --format json   # JSON compacto para el LLM
 
 # Modo CI: falla el build (exit 2) si hay hallazgos en o sobre una severidad
 wasp scan <ruta> --fail-on high --format sarif -o wasp.sarif
+
+# Cache incremental: re-escanea solo los archivos cambiados desde la última corrida
+wasp scan <ruta> --incremental
 ```
+
+### Cache incremental
+
+`--incremental` guarda un `.wasp-cache.json` en la raíz escaneada con los hallazgos y
+una huella de cada archivo. En la siguiente corrida solo re-escanea los archivos
+cambiados (staging temporal) y reusa el resto — en un monorepo grande esto baja de
+minutos a segundos (medido: ~142s → ~6s tras cambiar un archivo). Agregá
+`.wasp-cache.json` a tu `.gitignore`.
 
 ### Modo CI
 

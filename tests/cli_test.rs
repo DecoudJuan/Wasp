@@ -53,6 +53,32 @@ fn scan_fail_on_sin_hallazgos_devuelve_exito() {
 }
 
 #[test]
+fn incremental_crea_cache_y_lo_reusa_en_la_segunda_corrida() {
+    let dir = tempfile::tempdir().unwrap();
+    std::fs::write(dir.path().join("a.py"), "print(1)\n").unwrap();
+
+    // Primera corrida: sin cache previo → escaneo completo, crea el cache.
+    Command::cargo_bin("wasp")
+        .unwrap()
+        .args(["scan", "--incremental", "--format", "json"])
+        .arg(dir.path())
+        .assert()
+        .success()
+        .stderr(predicate::str::contains("sin cache previo"));
+
+    assert!(dir.path().join(".wasp-cache.json").is_file());
+
+    // Segunda corrida: usa el cache (0 cambios).
+    Command::cargo_bin("wasp")
+        .unwrap()
+        .args(["scan", "--incremental", "--format", "json"])
+        .arg(dir.path())
+        .assert()
+        .success()
+        .stderr(predicate::str::contains("0 archivo(s) cambiado(s)"));
+}
+
+#[test]
 fn sin_argumentos_muestra_ayuda_y_falla() {
     Command::cargo_bin("wasp")
         .unwrap()

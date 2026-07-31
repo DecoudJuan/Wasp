@@ -39,6 +39,9 @@ pub enum Command {
         /// Modo CI: falla (exit 2) si hay hallazgos en o sobre esta severidad.
         #[arg(long, value_enum)]
         fail_on: Option<Severity>,
+        /// Cache incremental: re-escanea solo los archivos cambiados desde el último escaneo.
+        #[arg(long)]
+        incremental: bool,
     },
 }
 
@@ -52,7 +55,8 @@ impl Cli {
                 format,
                 output,
                 fail_on,
-            } => run_scan(path, format, output, fail_on),
+                incremental,
+            } => run_scan(path, format, output, fail_on, incremental),
         }
     }
 }
@@ -90,8 +94,13 @@ fn run_scan(
     format: Format,
     output: Option<PathBuf>,
     fail_on: Option<Severity>,
+    incremental: bool,
 ) -> Result<i32> {
-    let outcome = orchestrator::scan(&path);
+    let outcome = if incremental {
+        scan_incremental(&path)?
+    } else {
+        orchestrator::scan(&path)
+    };
 
     // Aviso de herramientas omitidas por stderr (no contamina la salida principal).
     if !outcome.skipped.is_empty() {
@@ -137,4 +146,52 @@ fn run_scan(
     }
 
     Ok(0)
+}
+
+/// Escaneo incremental: reusa el cache y re-escanea solo los archivos cambiados.
+fn scan_incremental(path: &std::path::Path) -> Result<orchestrator::ScanOutcome> {
+    use crate::cache;
+
+    let commit = cache::head_commit(path);
+    let new_tree = cache::hash_tree(path).context("calculando huellas de archivos")?;
+
+    let outcome = match cache::load(path) {
+        Some(prev) => {
+            let diff = cache::diff_files(&prev.files, &new_tree);
+            eprintln!(
+                "Incremental: {} archivo(s) cambiado(s), {} removido(s) — re-escaneando solo eso.",
+                diff.changed.len(),
+                diff.removed.len()
+            );
+            let fresh = orchestrator::scan_changed(path, &diff.changed);
+            let findings = cache::merge_incremental(
+                prev.findings,
+                &diff.changed,
+                &diff.removed,
+                fresh.findings,
+            );
+            orchestrator::ScanOutcome {
+                findings,
+                ran: fresh.ran,
+                skipped: fresh.skipped,
+                errors: fresh.errors,
+            }
+        }
+        None => {
+            eprintln!("Incremental: sin cache previo — escaneo completo (se guardará el cache).");
+            orchestrator::scan(path)
+        }
+    };
+
+    // Persistir el nuevo cache.
+    let nuevo = cache::ScanCache {
+        commit,
+        files: new_tree,
+        findings: outcome.findings.clone(),
+    };
+    if let Err(e) = cache::save(path, &nuevo) {
+        eprintln!("Aviso: no se pudo guardar el cache: {e}");
+    }
+
+    Ok(outcome)
 }

@@ -47,7 +47,13 @@ Leyenda: ✅ hecho · 🚧 en curso · ⬜ pendiente
   - `gate.rs`: `max_severity`, `fails`, `count_at_or_above` (lógica pura)
   - `wasp scan --fail-on high` devuelve exit code 2 si hay hallazgos en/sobre el umbral
 
+- ✅ **Cache incremental — `--incremental`**
+  - `cache.rs`: `ScanCache`, `relativize`, `diff_files`, `merge_incremental`, `hash_tree`, `head_commit`
+  - `walker::walk_all` (incluye ocultos, excluye `.git/`) para huellas fieles al alcance de los escáneres
+  - `orchestrator::scan_changed` re-escanea solo el diff vía staging temporal; rutas normalizadas a relativas
+  - Medido en repo real: ~142s (completo) → ~6s (1 archivo cambiado)
+
 ## Ideas futuras (post-1.0)
-- Cache incremental por commit (solo re-escanear diffs) — **en curso**
 - Reglas Semgrep propias específicas del stack de Darwin
 - Baseline / supresión de findings aceptados
+- Cache incremental scoped a subdirectorio (hoy asume raíz == alcance)

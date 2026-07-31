@@ -4,6 +4,7 @@
 //! recorrido de repositorio, orquestación de escáneres y reporteadores) para que
 //! tanto el binario `wasp` como los tests de integración lo consuman.
 
+pub mod cache;
 pub mod cli;
 pub mod dedupe;
 pub mod detect;

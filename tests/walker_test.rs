@@ -36,6 +36,30 @@ fn walker_respeta_gitignore() {
 }
 
 #[test]
+fn walk_all_incluye_ocultos_pero_no_git() {
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path();
+    fs::create_dir_all(root.join(".github/workflows")).unwrap();
+    fs::create_dir_all(root.join(".git")).unwrap();
+    fs::write(root.join(".github/workflows/ci.yml"), "on: push\n").unwrap();
+    fs::write(root.join(".git/config"), "[core]\n").unwrap();
+    fs::write(root.join("main.rs"), "fn main(){}\n").unwrap();
+
+    let rutas: Vec<String> = walker::walk_all(root)
+        .unwrap()
+        .iter()
+        .map(|p| p.to_string_lossy().replace('\\', "/"))
+        .collect();
+
+    assert!(rutas
+        .iter()
+        .any(|r| r.ends_with(".github/workflows/ci.yml")));
+    assert!(rutas.iter().any(|r| r.ends_with("main.rs")));
+    // Nunca hashear el contenido interno de .git
+    assert!(!rutas.iter().any(|r| r.contains("/.git/")));
+}
+
+#[test]
 fn detecta_stacks_por_manifiestos() {
     let dir = tempfile::tempdir().unwrap();
     let root = dir.path();
